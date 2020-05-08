@@ -12,32 +12,50 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-family: "Comic Sans", sans-serif;
+        font-family: "Comic Sans MS", "Comic Sans", sans-serif;
         background: #6cacb9;
-      }
-
-      h2 {
-        font-size: 80px;
       }
 
       h1 {
         font-size: 120px;
         text-shadow: 3px 7px 15px rgba(0, 0, 0, 0.5);
       }
+
+      h2 {
+        font-size: 80px;
+      }
+      
     </style>
-    <link href="birthday-cake-solid.svg" rel="icon" type="image/svg+xml" />
   </head>
   <body>
-    <h2>Is it Missy's Birthday?</h2>
-    <h1 id="answer">No, not yet!</h1>
-    <h3 id="ps"></h3>
+    <h1>Is it Missy's Birthday yet?</h1>
+    <h2 id="answer">No</h2>
+    <h3 id="comeback"></h3>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
   <script>
-    const today = new Date();
 
-    if (today.getMonth() === 5 && today.getDate() === 21) {
-      document.getElementById("answer").innerHTML = "YES!";
+  	var date_diff_indays = function(date1, date2) {
+		dt1 = new Date(date1);
+		dt2 = new Date(date2);
+		return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
+	}
+
+    const noes = ['No.', 'Nope.', 'Nerp.', 'Nope, sorry.', 'I\'m afraid not, no.', 'Not yet!', 'NOE-WUH!'];
+    const yesses = ['Yes.', 'YES!', 'Yessiree!', 'Oh my yes.', 'That\'s right.', 'Affirmative.', 'Oh yeah, it\'s on like Donkey Kong', 'Yes!!! OMGOMGOMGOMG!'];
+
+    var today = new Date();
+    var nextBdayYear = today.getMonth() === 4 && today.getDate() > 21 || today.getMonth() > 4 ? today.getFullYear() + 1 : today.getFullYear();
+    var howManyDays = date_diff_indays(_.now(), 'May 21, ' + nextBdayYear);
+
+    document.getElementById("answer").innerHTML = noes[_.random(0, _.size(noes) - 1)];
+    document.getElementById("comeback").innerHTML = 'Maybe if you come back in ' + howManyDays + ' days, though';
+
+    if (today.getMonth() === 4 && today.getDate() === 21) {
+      document.getElementById("answer").innerHTML = yesses[_.random(0, _.size(yesses) - 1)];
+      document.getElementById("comeback").innerHTML = _.repeat('🎉🍰🎂🎁', 10);
     }
+
   </script>
 </html>
 
